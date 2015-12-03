@@ -74,9 +74,9 @@ public class Main {
      * @param pieces ArrayList Pieces du jeu
      * @param size   int Taille du trianble recherché
      */
-    public static void calculBruteForce(ArrayList<Piece> pieces, int size) {
+    public static void calculBruteForce(ArrayList<Piece> pieces, int size, int triangle) {
 
-        File file_output = new File(ASSETS + "t_" + size + "-pieces_" + (int) Math.sqrt(pieces.size()) + ".txt");
+        File file_output = new File(ASSETS + "t_" + triangle + "-pieces_" + size + ".txt");
         try {
             FileUtils.write(file_output, "");
         } catch (IOException e) {
@@ -92,15 +92,15 @@ public class Main {
         }
 
         ArrayList<String> possibles = new ArrayList<>();
-        jeu.setPiece(pieces.remove(0), 0, 0, (byte) 1);
-        calculRecursif(size, 2, jeu, possibles);
+        // jeu.setPiece(pieces.remove(0), 0, 0, (byte) 1);
+        calculRecursifTriangle(triangle, 1, jeu, possibles);
         System.out.println(possibles.size());
 
         String string_output = "";
         try {
             for (int i = 0; i < possibles.size(); i++) {
                 string_output += possibles.get(i) + '\n';
-                if (i % 2048 == 0) {
+                if (i % 1024 == 0) {
                     FileUtils.write(file_output, string_output, true);
                     string_output = "";
                 }
@@ -150,13 +150,86 @@ public class Main {
         }
     }
 
+    public static void calculRecursifAmeliore(int size, int position, EternityII jeu, ArrayList<String> possible)
+    {
+        if (position <= (size * size)) {
+            int[] xy = coordonnees[position - 1];
+            int col = xy[1];
+            int line = xy[0];
+
+            ArrayList<Piece> pieces = jeu.getPieces();
+            for (int i = 0, piecesSize = pieces.size(); i < piecesSize; i++) {
+                Piece piece = pieces.get(i);
+                for (byte j = 0; j < 4; j++) {
+                    piece.setTop(j);
+                    if (jeu.equalColor(piece, line, col, (byte) 0) && jeu.equalColor(piece, line, col, (byte) 1) &&
+                        jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3))
+                    {
+                        pieces.remove(i);
+                        jeu.setPiece(piece, line, col);
+
+                        calculRecursifAmeliore(size, position + 1, jeu, possible);
+
+                        jeu.setPiece(null, line, col);
+                        pieces.add(i, piece);
+                    }
+                }
+            }
+            jeu = null;
+        } else if (position == (size * size) + 1) {
+            possible.add(jeu.toString());
+        }
+    }
+
+    public static void calculRecursifTriangle(int triangle, int position, EternityII jeu, ArrayList<String> possible)
+    {
+        if (position <= triangle * (triangle + 1) / 2) {
+            int[] xy = coordonnees[position - 1];
+            int col = xy[1];
+            int line = xy[0];
+
+            ArrayList<Piece> pieces = jeu.getPieces();
+            for (int i = 0, piecesSize = pieces.size(); i < piecesSize; i++) {
+                Piece piece = pieces.get(i);
+                for (byte j = 0; j < 4; j++) {
+                    piece.setTop(j);
+                    if (jeu.equalColor(piece, line, col, (byte) 0) && jeu.equalColor(piece, line, col, (byte) 1) &&
+                        jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3))
+                    {
+                        pieces.remove(i);
+                        jeu.setPiece(piece, line, col);
+
+                        calculRecursifTriangle(triangle, position + 1, jeu, possible);
+
+                        jeu.setPiece(null, line, col);
+                        pieces.add(i, piece);
+                    }
+                }
+            }
+            jeu = null;
+        } else if (position == (triangle * (triangle + 1) / 2) + 1) {
+            possible.add(jeu.toStringTriangle());
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            int taille = 6;
 
 // 4X4
-            EternityII jeu = createFromFile(ASSETS + "pieces_0" + taille + "x0" + taille + " bis.txt");
-            calculBruteForce(jeu.getPieces(), taille);
+/*            for (int taille = 4; taille < 10; taille++) {
+                for (int triangle = 2; triangle <= 4; triangle++) {
+                    EternityII jeu = createFromFile(ASSETS + "pieces_0" + taille + "x0" + taille + " bis.txt");
+                    calculBruteForce(jeu.getPieces(), taille, triangle);
+                    jeu = null;
+                }
+            }*/
+
+            for (int triangle = 2; triangle <= 4; triangle++) {
+                EternityII jeu = createFromFile(ASSETS + "pieces_10x10 bis.txt");
+                calculBruteForce(jeu.getPieces(), 10, triangle);
+                jeu = null;
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
