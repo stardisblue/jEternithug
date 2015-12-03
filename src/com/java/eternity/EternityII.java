@@ -137,15 +137,33 @@ public class EternityII {
     public String toString() {
         String output = "";
 
-        for (Piece[] aTable : table) {
+        for (int i = 0; i < table.length; i++) {
+            Piece[] aTable = table[i];
             for (Piece anATable : aTable) {
                 if (anATable != null) {
-                    output += anATable.toString() + ":";
+                    output += anATable.toString() + ";";
                 } else {
-                    output += " ";
+                    output += " ;";
                 }
             }
         }
+
+        return output;
+    }
+
+    public String toStringTriangle() {
+        String output = "";
+
+        int[][] coordonnees = new int[table.length * table.length][2];
+        for (int i = 0; i < table.length * table.length; i++) {
+            coordonnees[i] = Main.calculyx(i + 1, table.length);
+        }
+
+        for (int i = 0; i < table.length; i++) {
+            if (table[coordonnees[i][0]][coordonnees[i][1]] == null) break;
+            output += table[coordonnees[i][0]][coordonnees[i][1]].toString() + ";";
+        }
+
 
         return output;
     }
