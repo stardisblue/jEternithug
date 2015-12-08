@@ -156,7 +156,7 @@ public class EternityII {
 
         int[][] coordonnees = new int[table.length * table.length][2];
         for (int i = 0; i < table.length * table.length; i++) {
-            coordonnees[i] = Main.calculyx(i + 1, table.length);
+            coordonnees[i] = Main.calculyx(i + 1, table.length,1);
         }
 
         for (int i = 0; i < table.length; i++) {

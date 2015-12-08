@@ -11,28 +11,69 @@ public class Main {
 
     public static final String ASSETS = "assets/";
     public static int[][] coordonnees;
+    final static int MODE_DIAG = 0;
+    final static int MODE_HORI = 1;
+    final static int MODE_SI = 2;
+    final static int MODE_SO = 3;
+    final static int MODE_SQ = 4;
+    final static int[][] SI4 ={{0,0},{1,0},{2,0},{3,0},{3,1} ,{3,2},{3,3},{2,3},{1,3},{0,3},{0,2},{0,1},{1,1},{2,1},{2,2},{1,2}};
+    final static int[][] SI5 ={{0,0},{1,0},{2,0},{3,0},{4,0},{4,1},{4,2},{4,3},{4,4},{3,4},{2,4},{1,4},{0,4},{0,3},{0,2},{0,1},{1,1},{1,2},{1,3},{2,3},{3,3},{3,2},{3,1},{2,1},{2,2}};
+    final static int[][] SO4 ={{1,2},{2,2},{2,1},{1,1},{0,1},{0,2},{0,3},{1,3},{2,3},{3,3},{3,2},{3,1},{3,0},{2,0},{1,0},{0,0}};
+    final static int[][] SO5 ={{2,2},{2,1},{3,1},{3,2},{3,3},{2,3},{1,3},{1,2},{1,1},{0,1},{0,2},{0,3},{0,4},{1,4},{2,4},{3,4},{4,4},{4,3},{4,2},{4,1},{4,0},{3,0},{2,0},{1,0},{0,0}};
+    final static int[][] SQ4 ={ {0,0},{3,0},{3,3},{0,3} ,{1,0},{3,1},{2,3},{0,2} ,{2,0},{3,2},{1,3},{0,1} ,{1,1},{2,1},{2,2},{1,2} };
+    final static int[][] SQ5 ={ {0,0},{4,0},{4,4},{0,4} ,{1,0},{4,1},{3,4},{0,3} ,{2,0},{4,2},{2,4},{0,2} ,{3,0},{4,3},{1,4},{0,1} ,{1,1},{3,1},{3,3},{1,3} ,{2,1},{3,2},{2,3},{1,2} ,{2,2}};
 
-    public static int[] calculyx(int position, int size) {
+    public static int[] calculyx(int position, int size, int mode) {
         int sum = 0;
-        for (int i = 1; i <= size; i++) {
-            sum += i;
-            if (sum >= position) {
-                int diff = sum - position;
-                return new int[]{i - diff - 1, diff};
-            }
+        int pos_inverse;
+        switch(mode) {
+            case MODE_DIAG: // diagonale
+                for (int i = 1; i <= size; i++) {
+                    sum += i;
+                    if (sum >= position) {
+                        int diff = sum - position;
+                        return new int[]{i - diff - 1, diff};
+                    }
+                }
+
+                pos_inverse = (size * size) - (position - 1);
+                sum = 0;
+
+                for (int i = 1; i <= size; i++) {
+                    sum += i;
+                    if (sum >= pos_inverse) {
+                        int diff = sum - pos_inverse;
+                        return new int[]{(size - 1) - (i - diff - 1), (size - 1) - diff};
+                    }
+                }
+                break;
+            case MODE_HORI: // horizontale
+                if(position % size == 1){
+                    return new int[]{0,position/size};
+                } else if(position % size == 0) {
+                    return new int[]{size - 1,(position/size) - 1};
+                } else {
+                    return new int[]{position - size*(position/size) - 1,position/size};
+                }
+            case MODE_SI: // SI
+                if(size == 4){
+                    return SI4[position-1];
+                } else {
+                    return SI5[position - 1];
+                }
+            case MODE_SO: // SO
+                if(size == 4){
+                    return SO4[position-1];
+                } else {
+                    return SO5[position-1];
+                }
+            case MODE_SQ: // SQ
+                if(size == 4){
+                    return SQ4[position-1];
+                } else {
+                    return SQ5[position-1];
+                }
         }
-
-        int pos_inverse = (size * size) - (position - 1);
-        sum = 0;
-
-        for (int i = 1; i <= size; i++) {
-            sum += i;
-            if (sum >= pos_inverse) {
-                int diff = sum - pos_inverse;
-                return new int[]{(size - 1) - (i - diff - 1), (size - 1) - diff};
-            }
-        }
-
         return new int[]{0, 0};
     }
 
@@ -88,12 +129,16 @@ public class Main {
 
         coordonnees = new int[size * size][2];
         for (int i = 0; i < size * size; i++) {
-            coordonnees[i] = calculyx(i + 1, size);
+            System.out.println("-----------");
+            System.out.print(calculyx(i + 1, size,3)[0]);
+            System.out.println(calculyx(i + 1, size,3)[1]);
+            //Affichage du parcours(coordonnées des positions dans l'ordre numérique);
+            coordonnees[i] = calculyx(i + 1, size,1);
         }
 
         ArrayList<String> possibles = new ArrayList<>();
         // jeu.setPiece(pieces.remove(0), 0, 0, (byte) 1);
-        calculRecursifTriangle(triangle, 1, jeu, possibles);
+        calculRecursifAmeliore(size, 1, jeu, possibles);
         System.out.println(possibles.size());
 
         String string_output = "";
@@ -224,11 +269,9 @@ public class Main {
                 }
             }*/
 
-            for (int triangle = 2; triangle <= 4; triangle++) {
-                EternityII jeu = createFromFile(ASSETS + "pieces_10x10 bis.txt");
-                calculBruteForce(jeu.getPieces(), 10, triangle);
+                EternityII jeu = createFromFile(ASSETS + "pieces_04x04 bis.txt");
+                calculBruteForce(jeu.getPieces(), 5,5);
                 jeu = null;
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
