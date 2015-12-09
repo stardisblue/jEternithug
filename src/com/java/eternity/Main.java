@@ -10,21 +10,39 @@ import java.util.ArrayList;
 public class Main {
 
     public static final String ASSETS = "assets/";
-    public static int[][] coordonnees;
     final static int MODE_DIAG = 0;
     final static int MODE_HORI = 1;
     final static int MODE_SI = 2;
     final static int MODE_SO = 3;
     final static int MODE_SQ = 4;
     //final static int noeuds = 0;
-    final static int[][] SI4 = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {2, 3}, {1, 3}, {0, 3}, {0, 2}, {0, 1}, {1, 1}, {2, 1}, {2, 2}, {1, 2}};
-    final static int[][] SI5 = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {4, 1}, {4, 2}, {4, 3}, {4, 4}, {3, 4}, {2, 4}, {1, 4}, {0, 4}, {0, 3}, {0, 2}, {0, 1}, {1, 1}, {1, 2}, {1, 3}, {2, 3}, {3, 3}, {3, 2}, {3, 1}, {2, 1}, {2, 2}};
-    final static int[][] SI6 = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {4, 5}, {3, 5}, {2, 5}, {1, 5}, {0, 5}, {0, 4}, {0, 3}, {0, 2}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}, {4, 2}, {4, 3}, {4, 4}, {3, 4}, {2, 4}, {1, 4}, {1, 3}, {1, 2}, {2, 2}, {3, 2}, {3, 3}, {2, 3}};
-    final static int[][] SO4 = {{1, 2}, {2, 2}, {2, 1}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {1, 3}, {2, 3}, {3, 3}, {3, 2}, {3, 1}, {3, 0}, {2, 0}, {1, 0}, {0, 0}};
-    final static int[][] SO5 = {{2, 2}, {2, 1}, {3, 1}, {3, 2}, {3, 3}, {2, 3}, {1, 3}, {1, 2}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {4, 3}, {4, 2}, {4, 1}, {4, 0}, {3, 0}, {2, 0}, {1, 0}, {0, 0}};
-    final static int[][] SO6 = {{2, 3}, {3, 3}, {3, 2}, {2, 2}, {1, 2}, {1, 3}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {4, 3}, {4, 2}, {4, 1}, {3, 1}, {2, 1}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5}, {5, 4}, {5, 3}, {5, 2}, {5, 1}, {5, 0}, {4, 0}, {3, 0}, {2, 0}, {1, 0}, {0, 0}};
-    final static int[][] SQ4 = {{0, 0}, {3, 0}, {3, 3}, {0, 3}, {1, 0}, {3, 1}, {2, 3}, {0, 2}, {2, 0}, {3, 2}, {1, 3}, {0, 1}, {1, 1}, {2, 1}, {2, 2}, {1, 2}};
-    final static int[][] SQ5 = {{0, 0}, {4, 0}, {4, 4}, {0, 4}, {1, 0}, {4, 1}, {3, 4}, {0, 3}, {2, 0}, {4, 2}, {2, 4}, {0, 2}, {3, 0}, {4, 3}, {1, 4}, {0, 1}, {1, 1}, {3, 1}, {3, 3}, {1, 3}, {2, 1}, {3, 2}, {2, 3}, {1, 2}, {2, 2}};
+    final static int[][] SI4 = {
+            {0, 0}, {1, 0}, {2, 0}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {2, 3}, {1, 3}, {0, 3}, {0, 2}, {0, 1}, {1, 1},
+            {2, 1}, {2, 2}, {1, 2}};
+    final static int[][] SI5 = {
+            {0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {4, 1}, {4, 2}, {4, 3}, {4, 4}, {3, 4}, {2, 4}, {1, 4}, {0, 4},
+            {0, 3}, {0, 2}, {0, 1}, {1, 1}, {1, 2}, {1, 3}, {2, 3}, {3, 3}, {3, 2}, {3, 1}, {2, 1}, {2, 2}};
+    final static int[][] SI6 = {
+            {0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {4, 5}, {3, 5},
+            {2, 5}, {1, 5}, {0, 5}, {0, 4}, {0, 3}, {0, 2}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}, {4, 2}, {4, 3},
+            {4, 4}, {3, 4}, {2, 4}, {1, 4}, {1, 3}, {1, 2}, {2, 2}, {3, 2}, {3, 3}, {2, 3}};
+    final static int[][] SO4 = {
+            {1, 2}, {2, 2}, {2, 1}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {1, 3}, {2, 3}, {3, 3}, {3, 2}, {3, 1}, {3, 0},
+            {2, 0}, {1, 0}, {0, 0}};
+    final static int[][] SO5 = {
+            {2, 2}, {2, 1}, {3, 1}, {3, 2}, {3, 3}, {2, 3}, {1, 3}, {1, 2}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {0, 4},
+            {1, 4}, {2, 4}, {3, 4}, {4, 4}, {4, 3}, {4, 2}, {4, 1}, {4, 0}, {3, 0}, {2, 0}, {1, 0}, {0, 0}};
+    final static int[][] SO6 = {
+            {2, 3}, {3, 3}, {3, 2}, {2, 2}, {1, 2}, {1, 3}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {4, 3}, {4, 2}, {4, 1},
+            {3, 1}, {2, 1}, {1, 1}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5},
+            {5, 4}, {5, 3}, {5, 2}, {5, 1}, {5, 0}, {4, 0}, {3, 0}, {2, 0}, {1, 0}, {0, 0}};
+    final static int[][] SQ4 = {
+            {0, 0}, {3, 0}, {3, 3}, {0, 3}, {1, 0}, {3, 1}, {2, 3}, {0, 2}, {2, 0}, {3, 2}, {1, 3}, {0, 1}, {1, 1},
+            {2, 1}, {2, 2}, {1, 2}};
+    final static int[][] SQ5 = {
+            {0, 0}, {4, 0}, {4, 4}, {0, 4}, {1, 0}, {4, 1}, {3, 4}, {0, 3}, {2, 0}, {4, 2}, {2, 4}, {0, 2}, {3, 0},
+            {4, 3}, {1, 4}, {0, 1}, {1, 1}, {3, 1}, {3, 3}, {1, 3}, {2, 1}, {3, 2}, {2, 3}, {1, 2}, {2, 2}};
+    public static int[][] coordonnees;
 
     public static int[] calculyx(int position, int size, int mode) {
         int sum = 0;
@@ -140,19 +158,22 @@ public class Main {
             //System.out.print(calculyx(i + 1, size,MODE_SO)[0]);
             //System.out.println(calculyx(i + 1, size,MODE_SO)[1]);
             //Affichage du parcours(coordonnées des positions dans l'ordre numérique);
-            coordonnees[i] = calculyx(i + 1, size, MODE_SI);
+            coordonnees[i] = calculyx(i + 1, size, MODE_SO);
             //MODE_DIAG
             //MODE_HORI
             //MODE_SI
             //MODE_SO
             //MODE_SQ
         }
-        int[] noeuds = {0};
+        int[] noeuds = new int[size * size];
+
         ArrayList<String> possibles = new ArrayList<>();
         // jeu.setPiece(pieces.remove(0), 0, 0, (byte) 1);
 
-        calculRecursifAmeliore(size, 1, jeu, possibles,noeuds);
-        System.out.println("nombre de noeuds " + noeuds[0]);
+        calculRecursifAmeliore(size, 1, jeu, possibles, noeuds);
+        for (int noeud : noeuds) {
+            System.out.println("nombre de noeuds " + noeud);
+        }
         System.out.println(possibles.size()); // Nombre de solutions possible
         String string_output = "";
         try {
@@ -183,7 +204,8 @@ public class Main {
                 for (byte j = 0; j < 4; j++) {
                     piece.setTop(j);
                     if (jeu.equalColor(piece, line, col, (byte) 0) && jeu.equalColor(piece, line, col, (byte) 1) &&
-                            jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3)) {
+                        jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3))
+                    {
                         Piece[][] plateau = new Piece[size][size];
                         for (int k = 0; k < size; k++)
                             System.arraycopy(jeu.getTable()[k], 0, plateau[k], 0, size);
@@ -206,7 +228,9 @@ public class Main {
         }
     }
 
-    public static void calculRecursifAmeliore(int size, int position, EternityII jeu, ArrayList<String> possible, int[] noeuds) {
+    public static void calculRecursifAmeliore(
+            int size, int position, EternityII jeu, ArrayList<String> possible, int[] noeuds)
+    {
         if (position <= (size * size)) {
             int[] xy = coordonnees[position - 1];
             int col = xy[1];
@@ -218,8 +242,9 @@ public class Main {
                 for (byte j = 0; j < 4; j++) {
                     piece.setTop(j);
                     if (jeu.equalColor(piece, line, col, (byte) 0) && jeu.equalColor(piece, line, col, (byte) 1) &&
-                            jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3)) {
-                        noeuds[0]++;
+                        jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3))
+                    {
+                        noeuds[position-1]++;
                         pieces.remove(i);
                         jeu.setPiece(piece, line, col);
 
@@ -233,7 +258,6 @@ public class Main {
             jeu = null;
         } else if (position == (size * size) + 1) {
             possible.add(jeu.toString());
-            return;
         }
     }
 
@@ -249,7 +273,8 @@ public class Main {
                 for (byte j = 0; j < 4; j++) {
                     piece.setTop(j);
                     if (jeu.equalColor(piece, line, col, (byte) 0) && jeu.equalColor(piece, line, col, (byte) 1) &&
-                            jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3)) {
+                        jeu.equalColor(piece, line, col, (byte) 2) && jeu.equalColor(piece, line, col, (byte) 3))
+                    {
                         pieces.remove(i);
                         jeu.setPiece(piece, line, col);
 

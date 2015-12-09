@@ -30,6 +30,7 @@ Temporary Items
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
 
 .idea/
+*.iml
 
 ## Directory-based project format:
 # if you remove the above rule, at least ignore the following:
